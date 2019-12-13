@@ -10,19 +10,23 @@ export default new Vuex.Store({
     startIndex: 0,
     totalItems: 0,
     query: null,
+    book: null,
   },
   getters: {
     getBooks: state => {
       return state.books
     },
-    getStartIndex(state) {
+    getStartIndex: state => {
       return state.startIndex
     },
-    getTotalItems(state) {
+    getTotalItems: state => {
       return state.totalItems
     },
-    getQuery(state) {
+    getQuery: state => {
       return state.query
+    },
+    getBook: state => {
+      return state.book
     },
   },
   mutations: {
@@ -61,6 +65,9 @@ export default new Vuex.Store({
     setQuery(state, query) {
       state.query = query
     },
+    setBook(state, book) {
+      state.book = book
+    },
   },
   actions: {
     setBooks({ commit }, query = null) {
@@ -76,7 +83,6 @@ export default new Vuex.Store({
         }
         axios.get(BASE_ENDPOINT, CONFIG).then(res => {
           if (res.data) {
-            console.log(res.data)
             commit('updateBooks', res.data.items)
             commit('updateStartIndex')
             commit('updateTotalItems', res.data.totalItems)
@@ -84,28 +90,26 @@ export default new Vuex.Store({
         })
       }
     },
-  },
-  /**
-   * books内のidを検索して、id値が一致するものが存在すれば取得し、なければapiを叩いて取得する
-   *
-   * @param id
-   * @return {function(*): *}
-   */
-  find(id) {
-    const filtered = this.getters.getBooks.filter(elm => {
-      return elm.id === id
-    })
-    const CONFIG = {
-      params: {
-        q: this.query,
-      },
-    }
-    if (!filtered) {
-      axios.get(`${BASE_ENDPOINT}/${id}`, CONFIG).then(res => {
-        if (res.data) {
-          console.log(res.data)
-        }
+    // /**
+    //  * books内のidを検索して、id値が一致するものが存在すれば取得し、なければapiを叩いて取得する
+    //  *
+    //  * @param id
+    //  * @return {function(*): *}
+    //  */
+    setBook({ commit }, id) {
+      const filtered = this.getters.getBooks.filter(elm => {
+        return elm.id === id
       })
-    }
+      if (!filtered) {
+        axios.get(`${BASE_ENDPOINT}/${id}`).then(res => {
+          if (res.data) {
+            commit('setBook', res.data.items)
+            commit('updateBooks', res.data.items)
+          }
+        })
+      } else {
+        commit('setBook', filtered[0])
+      }
+    },
   },
 })

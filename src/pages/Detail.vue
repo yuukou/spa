@@ -12,9 +12,11 @@ export default {
   name: 'Index',
   computed: {
     book() {
-      console.log(this.$store.getters.find(this.$route.params.id))
-      return this.$store.getters.find(this.$route.params.id)
+      return this.$store.getters.getBook
     },
+  },
+  created() {
+    this.$store.dispatch('setBook', this.$route.params.id)
   },
 }
 </script>
