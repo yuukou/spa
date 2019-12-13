@@ -1,11 +1,11 @@
 <template>
   <div>
     <div v-show="totalCount">{{ displayCount }}/{{ totalCount }}件表示</div>
-    <label for="query">検索ワード</label>
+    <label for="query" class="search_label">検索ワード</label>
     <input id="query" v-model="query" type="text" @change="onChange" />
     <div v-for="book in books" :key="book.id">
       <router-link :to="{ name: 'Detail', params: { id: book.id } }">
-        <img :src="book.volumeInfo.imageLinks.thumbnail" alt="" />
+        <img :src="getThumbnail(book)" alt="" />
         <p>タイトル : {{ book.volumeInfo.title }}</p>
         <p>サブタイトル : {{ book.volumeInfo.subtitle }}</p>
       </router-link>
@@ -55,6 +55,20 @@ export default {
     clickedMore() {
       this.$store.dispatch('setBooks')
     },
+    getThumbnail(book) {
+      if (book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail) {
+        return book.volumeInfo.imageLinks.thumbnail
+      } else {
+        return require('../assets/Noimage.svg')
+      }
+    },
   },
 }
 </script>
+
+<style scoped>
+.search_label {
+  display: block;
+  font-size: x-large;
+}
+</style>

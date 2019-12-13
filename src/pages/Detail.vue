@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div>詳細ページです</div>
     <img :src="book.volumeInfo.imageLinks.thumbnail" alt="" />
     <p>タイトル : {{ book.volumeInfo.title }}</p>
     <p>サブタイトル : {{ book.volumeInfo.subtitle }}</p>

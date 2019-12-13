@@ -23,6 +23,12 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-##実装する
-https://www.ritolab.com/entry/181https://www.ritolab.com/entry/181
+## 実装する
+> https://www.ritolab.com/entry/181https://www.ritolab.com/entry/181
+
 VueXでデータを保存し、そこからローカルストレージにデータを保存し、そこに該当データがない場合のみ、APIを叩く設定にする
+
+## 参考
+> https://qiita.com/frost_star/items/71ed64e1d040a7911c06
+
+googleApiのパラメータ等
