@@ -11,50 +11,55 @@
         <p>タイトル : {{ book.volumeInfo.title }}</p>
         <p>サブタイトル : {{ book.volumeInfo.subtitle }}</p>
       </router-link>
-      <!--      <a @click="clickedMore" />-->
     </div>
+    <button v-show="isShowClickedMoreButton" @click="clickedMore">
+      もっとみる
+    </button>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'Index',
   data() {
     return {
-      books: [],
-      query: 'vue',
+      query: null,
     }
   },
-  created() {
-    const ENDPOINT = 'https://www.googleapis.com/books/v1/volumes'
-    const CONFIG = {
-      params: {
-        q: this.query,
-      },
-    }
-    axios.get(ENDPOINT, CONFIG).then(res => {
-      if (res.data) {
-        this.books = res.data.items
-        this.$store.commit('')
+  computed: {
+    books() {
+      return this.$store.getters.getBooks
+    },
+    isShowClickedMoreButton() {
+      const startIndex = this.$store.getters.getStartIndex
+      if (startIndex) {
+        return startIndex < this.$store.getters.getTotalItems
       }
-    })
+      return false
+    },
   },
+  // created() {
+  //   const ENDPOINT = 'https://www.googleapis.com/books/v1/volumes'
+  //   const CONFIG = {
+  //     params: {
+  //       q: this.query,
+  //     },
+  //   }
+  //   axios.get(ENDPOINT, CONFIG).then(res => {
+  //     if (res.data) {
+  //       this.books = res.data.items
+  //       this.$store.commit('')
+  //     }
+  //   })
+  // },
   methods: {
     onChange() {
-      const ENDPOINT = 'https://www.googleapis.com/books/v1/volumes'
-      const CONFIG = {
-        params: {
-          q: this.query,
-        },
+      if (this.query) {
+        this.$store.dispatch('getBooks', this.query)
       }
-      axios.get(ENDPOINT, CONFIG).then(res => {
-        if (res.data) {
-          this.books = res.data.items
-          this.$store.commit('')
-        }
-      })
+    },
+    clickedMore() {
+      this.$store.dispatch('getBooks', this.query)
     },
   },
 }
