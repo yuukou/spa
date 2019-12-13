@@ -8,21 +8,13 @@
 </template>
 
 <script>
-// import axios from 'axios'
-// const ENDPOINT = 'https://www.googleapis.com/books/v1/volumes'
-
 export default {
   name: 'Index',
-  data() {
-    return {
-      book: null,
-    }
-  },
-  created() {
-    this.id = this.$route.params.id
-    // axios.get(`${ENDPOINT}/${id}`).then(res => {
-    //   this.book = res.data
-    // })
+  computed: {
+    book() {
+      console.log(this.$store.getters.find(this.$route.params.id))
+      return this.$store.getters.find(this.$route.params.id)
+    },
   },
 }
 </script>
