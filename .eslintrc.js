@@ -10,7 +10,11 @@ module.exports = {
     "_": true,
     "jQuery": true,
     "vue": true,
-    "axios": true
+    "axios": true,
+    "console": true
+  },
+  "rules": {
+    "no-console": "off",
   },
   "extends": [
     "eslint:recommended",
