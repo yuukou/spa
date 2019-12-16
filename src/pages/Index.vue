@@ -1,27 +1,63 @@
 <template>
-  <div>
-    <div v-show="totalCount">{{ displayCount }}/{{ totalCount }}件</div>
-    <div class="text-input">
-      <label for="query" class="search_label">検索ワード</label>
-      <input
-        id="query"
-        v-model="query"
-        type="text"
-        class="search_box"
-        @change="onChange"
-      />
+  <div class="content_wrapper">
+    <div v-show="totalCount" class="total_count">
+      {{ displayCount }}/{{ totalCount }}件
     </div>
+    <b-container fluid class="search_box">
+      <b-row class="my-1">
+        <b-col sm="2">
+          <label for="input-default" v-text="`検索ワード:`" />
+        </b-col>
+        <b-col sm="10">
+          <b-form-input
+            id="input-default"
+            v-model="query"
+            placeholder="検索ワード"
+            @change="onChange"
+          />
+        </b-col>
+      </b-row>
+    </b-container>
 
-    <div v-for="book in books" :key="book.id">
-      <router-link :to="{ name: 'Detail', params: { id: book.id } }">
-        <img :src="getThumbnail(book)" alt="" />
-        <p>タイトル : {{ book.volumeInfo.title }}</p>
-        <p>サブタイトル : {{ book.volumeInfo.subtitle }}</p>
-      </router-link>
+    <div class="search_content_wrapper">
+      <div v-for="book in books" :key="book.id" class="search-content">
+        <div>
+          <b-card no-body class="overflow-hidden book_card">
+            <router-link
+              :to="{ name: 'Detail', params: { id: book.id } }"
+              class="book_card_link"
+            >
+              <b-row no-gutters>
+                <b-col md="6" class="book_card_thumbnail_wrapper">
+                  <b-card-img
+                    :src="getThumbnail(book)"
+                    fluid
+                    class="rounded-0 book_card_thumbnail"
+                  />
+                </b-col>
+                <b-col md="6">
+                  <b-card-body
+                    :title="book.volumeInfo.title"
+                    class="book_card_body"
+                    title-tag="div"
+                  >
+                    <b-card-text v-text="book.volumeInfo.subtitle" />
+                  </b-card-body>
+                </b-col>
+              </b-row>
+            </router-link>
+          </b-card>
+        </div>
+      </div>
     </div>
-    <button v-show="isShowClickedMoreButton" @click="clickedMore">
-      もっとみる
-    </button>
+    <div class="btn_wrapper">
+      <b-button
+        v-show="isShowClickedMoreButton"
+        variant="dark"
+        @click="clickedMore"
+        >もっとみる</b-button
+      >
+    </div>
   </div>
 </template>
 
@@ -76,48 +112,50 @@ export default {
 </script>
 
 <style scoped>
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  font-family: Montserrat;
-  background: #313e50;
+.book_card_link {
+  text-decoration: none;
+  color: black;
 }
-
-.text-input {
-  margin: 50px 0;
+.search_box {
+  margin: 40px 0;
 }
-.text-input input[type='text'] {
-  display: inline-block;
-  width: 500px;
-  height: 50px;
-  font-size: 20px;
-  line-height: 20px;
-  box-sizing: border-box;
-  outline: none;
-  border: 1px solid lightgray;
-  border-radius: 0 3px 3px 0;
-  padding: 10px 10px 10px 10px;
-  transition: all 0.1s ease-out;
+@media screen and (max-width: 900px) {
+  .content_wrapper {
+    width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  .total_count {
+    font-size: 18px;
+    color: #e83e8c;
+    font-weight: bolder;
+  }
+  .book_card {
+    max-width: 300px;
+    margin: 30px auto;
+  }
 }
-.text-input label {
-  top: 0;
-  left: 0;
-  bottom: 0;
-  height: 50px;
-  line-height: 50px;
-  font-size: 22px;
-  font-weight: bold;
-  color: white;
-  border-radius: 3px 0 0 3px;
-  padding: 10px 20px;
-  background: #e03616;
-  -webkit-transform: translateZ(0) translateX(0);
-  transform: translateZ(0) translateX(0);
-  transition: all 0.3s ease-in;
-  transition-delay: 0.2s;
+@media screen and (min-width: 900px) {
+  .content_wrapper {
+    width: 900px;
+    margin: 0 auto;
+  }
+  .search_content_wrapper {
+    margin-bottom: 50px;
+  }
+  .book_card {
+    max-width: 300px;
+    margin: 30px auto;
+    max-height: 180px;
+  }
+  .book_card_body {
+    font-size: 15px;
+    text-align: left;
+  }
+  .total_count {
+    font-size: 25px;
+    color: #e83e8c;
+    font-weight: bolder;
+  }
 }
 </style>
