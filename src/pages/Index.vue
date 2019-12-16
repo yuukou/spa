@@ -19,7 +19,7 @@
       </b-row>
     </b-container>
 
-    <div class="search_content_wrapper">
+    <transition-group tag="div" class="search_content_wrapper" name="book_list">
       <div v-for="book in books" :key="book.id" class="search-content">
         <div>
           <b-card no-body class="overflow-hidden book_card">
@@ -49,7 +49,7 @@
           </b-card>
         </div>
       </div>
-    </div>
+    </transition-group>
     <div class="btn_wrapper">
       <b-button
         v-show="isShowClickedMoreButton"
@@ -112,6 +112,7 @@ export default {
 </script>
 
 <style scoped>
+/*共通 開始*/
 .book_card_link {
   text-decoration: none;
   color: black;
@@ -119,6 +120,42 @@ export default {
 .search_box {
   margin: 40px 0;
 }
+/*共通 終了*/
+
+/*transition 開始*/
+.book_list-enter-active {
+  opacity: 0;
+  transform: translateX(50px);
+  transition-property: transform, opacity;
+  transition-duration: 0.6s;
+  transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
+  transition-delay: 0s;
+}
+.book_list-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+.book_list-leave-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition-property: transform, opacity;
+  transition-duration: 0.6s;
+  transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
+  transition-delay: 0s;
+}
+.book_list-leave-to {
+  opacity: 0;
+  transform: translateX(50px);
+}
+.book_list-move {
+  transition-property: transform;
+  transition-duration: 0.6s;
+  transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
+  transition-delay: 0s;
+}
+/*transition 終了*/
+
+/*スマホ 開始*/
 @media screen and (max-width: 900px) {
   .content_wrapper {
     width: 100%;
@@ -135,6 +172,9 @@ export default {
     margin: 30px auto;
   }
 }
+/*スマホ 終了*/
+
+/*PC 開始*/
 @media screen and (min-width: 900px) {
   .content_wrapper {
     width: 900px;
@@ -158,4 +198,5 @@ export default {
     font-weight: bolder;
   }
 }
+/*PC 終了*/
 </style>
