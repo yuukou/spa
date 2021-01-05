@@ -9,7 +9,7 @@
     "fix": "eslint src --ext .js,.vue --fix"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.4.3",
     "eslint-config-prettier": "^6.7.0",
